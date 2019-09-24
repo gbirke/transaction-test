@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+    db:
+        image: mysql:5.6
+        environment:
+          - MYSQL_RANDOM_ROOT_PASSWORD=yes
+          - MYSQL_USER=test
+          - MYSQL_PASSWORD=test
+          - MYSQL_DATABASE=my_test
+        volumes:
+            # Add query log
+            - ./logging.cnf:/etc/mysql/conf.d/logging.cnf
+        expose:
+          - "3306"
+
+    app:
+        build: .
+        volumes:
+            - .:/app
+        links:
+            - db
